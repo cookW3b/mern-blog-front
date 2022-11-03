@@ -13,6 +13,7 @@ import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { useDispatch } from 'react-redux';
 import { fetchRemovePost } from '../../redux/slices/post';
+import axios from '../../axios';
 
 export const Post = ({
   id,
@@ -43,6 +44,7 @@ export const Post = ({
 		}
 	};
 
+	
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
@@ -73,7 +75,7 @@ export const Post = ({
           <ul className={styles.tags}>
             {tags.map((name) => (
               <li key={name}>
-                <Link to={`/tag/${name}`}>#{name}</Link>
+                <Link to={`/tags/${name}`}>#{name}</Link>
               </li>
             ))}
           </ul>
