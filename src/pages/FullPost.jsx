@@ -13,6 +13,7 @@ export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setLoading] = useState(true);
 	const { id } = useParams();
+	const comments = data?.comments;
 
 	useEffect(() => {
 		axios
@@ -24,12 +25,14 @@ export const FullPost = () => {
 			.catch((err) => {
 				console.log(err);
 				alert('Не удалось получиь статью');
-		})
+		});
+
 	}, [])
 	if(isLoading) {
 		return <Post isLoading={isLoading} isFullPost />
 	}
 	
+	console.log(comments)
 
   return (
     <>
@@ -47,23 +50,34 @@ export const FullPost = () => {
         <ReactMarkdown children={data.text}/>
       </Post>
       <CommentsBlock
-        items={[
-          {
-            user: {
-              fullName: "Вася Пупкин",
-              avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
-            },
-            text: "Это тестовый комментарий 555555",
-          },
-          {
-            user: {
-              fullName: "Иван Иванов",
-              avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
-            },
-            text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
-          },
-        ]}
-        isLoading={false}
+        items = {	comments.map((item) => {
+					return {
+						user: {
+							fullName: item.userName,
+							avatarUrl: item.avatarUrl
+						},
+						text: item.text
+					}
+				})}
+
+
+			// [
+			// 	{
+			// 		user: {
+			// 			fullName: "Вася Пупкин",
+			// 			avatarUrl: "https://mui.com/static/images/avatar/1.jpg",
+			// 		},
+			// 		text: "Это тестовый комментарий 555555",
+			// 	},
+			// 	{
+			// 		user: {
+			// 			fullName: "Иван Иванов",
+			// 			avatarUrl: "https://mui.com/static/images/avatar/2.jpg",
+			// 		},
+			// 		text: "When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top",
+			// 	},
+			// ]
+        isLoading={isLoading}
       >
         <Index />
       </CommentsBlock>
