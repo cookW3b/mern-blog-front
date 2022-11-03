@@ -17,11 +17,11 @@ export const Registration = () => {
 	const isAuth = useSelector(selectIsAuth);
 	const dispatch = useDispatch();
 	const { register, handleSubmit, formState: {errors, isValid} } = useForm({
-		defaultValues: {
-			fullName: 'Илья Соболев',
-			email: 'tes1342t@test.ru',
-			password: '1234'
-		},
+		// defaultValues: {
+		// 	fullName: 'Илья Соболев',
+		// 	email: 'tes1342t@test.ru',
+		// 	password: '1234'
+		// },
 		mode:'onChange'
 	});
 
@@ -67,6 +67,7 @@ export const Registration = () => {
 					label="Пароль" 
 					error={Boolean(errors.password?.message)}
 					helperText={errors.password?.message}
+					type="password"
 					{...register('password', { required: 'Укажите пароль'})}
 					fullWidth />
 				<Button disabled={!isValid} type='submit' size="large" variant="contained" fullWidth>

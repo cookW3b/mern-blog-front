@@ -17,6 +17,8 @@ export const FullPost = () => {
 	const [comments, setComments] = useState();
 	const [checkComments, setCheckComments] = useState(0);
 
+	const token = window.localStorage.getItem('token');
+
 	useEffect(() => {
 		if(isLoading) {
 			axios
@@ -71,7 +73,7 @@ export const FullPost = () => {
 				}) : []}
         isLoading={isLoading}
       >
-        <Index id={id} comments={checkComments} setComments={setCheckComments} image={data.user.avatarUrl} />
+				{ token && (<Index id={id} comments={checkComments} setComments={setCheckComments} image={data.user.avatarUrl} />) }
       </CommentsBlock>
     </>
   );
