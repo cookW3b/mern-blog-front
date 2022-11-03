@@ -7,22 +7,24 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import axios from '../../axios';
 
-export const Index = ({id, image}) => {
+export const Index = ({id, image, setComments, comments}) => {
 
 	const [text, setText] = useState('');
 
-	const onSubmit = () => {
+	const onSubmit = async () => {
 		if(text === '') return;
 		const req = {
 			text
 		}
 		try {
-			axios.post(`/comments/${id}`, req)
+			await axios.post(`/comments/${id}`, req);
+			setComments(!comments)
+			setText('');
 		} catch (error) {
 			alert('Не удалось оставить комментарий');
 		}
 	}
-	console.log(text)
+
 
   return (
     <>

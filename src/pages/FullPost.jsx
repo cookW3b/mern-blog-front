@@ -13,26 +13,36 @@ export const FullPost = () => {
 	const [data, setData] = useState();
 	const [isLoading, setLoading] = useState(true);
 	const { id } = useParams();
-	const comments = data?.comments;
+
+	const [comments, setComments] = useState();
+	const [checkComments, setCheckComments] = useState(0);
 
 	useEffect(() => {
-		axios
+		if(isLoading) {
+			axios
 			.get(`/posts/${id}`)
 			.then(res => {
 				setData(res.data);
 				setLoading(false);
+				setComments(res.data.comments)
 			})
 			.catch((err) => {
 				console.log(err);
 				alert('Не удалось получиь статью');
-		});
+			});
+		} else {
+			axios
+				.get(`comments/${id}`)
+				.then(res => {
+					setComments(res.data.comments)
+				})
+		}
+		
 
-	}, [comments])
+	}, [checkComments])
 	if(isLoading) {
 		return <Post isLoading={isLoading} isFullPost />
 	}
-	
-	console.log(comments)
 
   return (
     <>
@@ -50,7 +60,7 @@ export const FullPost = () => {
         <ReactMarkdown children={data.text}/>
       </Post>
       <CommentsBlock
-        items = {	comments.map((item) => {
+        items = {	comments ? comments.map((item) => {
 					return {
 						user: {
 							fullName: item.userName,
@@ -58,10 +68,10 @@ export const FullPost = () => {
 						},
 						text: item.text
 					}
-				})}
+				}) : []}
         isLoading={isLoading}
       >
-        <Index id={id} image={data.user.avatarUrl} />
+        <Index id={id} comments={checkComments} setComments={setCheckComments} image={data.user.avatarUrl} />
       </CommentsBlock>
     </>
   );
